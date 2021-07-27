@@ -1,0 +1,47 @@
+                       === npm audit security report ===                        
+
+
+                                 Manual Review                                  
+             Some vulnerabilities require your attention to resolve             
+                                                                                
+          Visit https://go.npm.me/audit-guide for additional guidance           
+
+
+  Moderate        Regular Expression Denial of Service                          
+
+  Package         browserslist                                                  
+
+  Patched in      >=4.16.5                                                      
+
+  Dependency of   react-scripts                                                 
+
+  Path            react-scripts > react-dev-utils > browserslist                
+
+  More info       https://npmjs.com/advisories/1747                             
+
+
+  Moderate        Regular expression denial of service                          
+
+  Package         glob-parent                                                   
+
+  Patched in      >=5.1.2                                                       
+
+  Dependency of   react-scripts                                                 
+
+  Path            react-scripts > webpack > watchpack > watchpack-chokidar2 >   
+                  chokidar > glob-parent                                        
+
+  More info       https://npmjs.com/advisories/1751                             
+
+
+  Moderate        Regular expression denial of service                          
+
+  Package         glob-parent                                                   
+
+  Patched in      >=5.1.2                                                       
+
+  Dependency of   react-scripts                                                 
+
+  Path            react-scripts > webpack-dev-server > chokidar > glob-parent   
+
+  More info       https://npmjs.com/advisories/1751                             

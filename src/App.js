@@ -1,38 +1,31 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
-import Navbar from "./components/Navbar/Navbar";
-// import Products from './components/Products/Products';
-
+import { commerce } from "./lib/commerce";
 import { Products, NavBar } from "./components";
 
 export default function App() {
+    const [products, setProducts] = useState([]);
+
+    //  Fetch the Products on load
+    const fetchProducts = async () => {
+        // commerce.products.list() returns a promise and you have to await it to   see what is inside
+        const { data } = await commerce.products.list();
+        // When data is recived you can now destructure/formate the data from the api
+        setProducts(data); // Pupulates the state with our products
+    };
+
+    useEffect(() => {
+        fetchProducts();
+    }, []);
+
+    console.log("products:", products);
+
     return (
         <div id="App">
             <NavBar />
-            <Products></Products>
+            <Products products={products}></Products>
         </div>
     );
 }
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
-
-// export default App;
+// UseEffect - is used to fetch products imediitly on application load

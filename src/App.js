@@ -6,7 +6,8 @@
 
 import React, { useState, useEffect } from "react";
 import { commerce } from "./lib/commerce";
-import { Products, NavBar } from "./components";
+import { Products, NavBar, Cart } from "./components";
+// import { Cart } from "@chec/commerce.js/features/cart";
 
 export default function App() {
     const [products, setProducts] = useState([]);
@@ -23,15 +24,13 @@ export default function App() {
 
     const fetchCart = async () => {
         // api call to recieve respone of commerce.cart.retrieve()
-
-        const cart = await commerce.cart.retrieve();
-        setCart(cart);
+        setCart(await commerce.cart.retrieve());
         // setCart(await commerce.cart.retrieve()) // doesn't create a variable
     };
 
     // Adds the product key and how the quanitity your adding to cart
-    const handleAddToCart = async (productId, quanitity) => {
-        const item = await commerce.cart.add(productId, quanitity);
+    const handleAddToCart = async (productId, quantity) => {
+        const item = await commerce.cart.add(productId, quantity);
 
         setCart(item.cart);
     };
@@ -46,8 +45,9 @@ export default function App() {
 
     return (
         <div id="App">
-            <NavBar totalItems = {cart.total_items}/>
+            <NavBar totalItems={cart.total_items} />
             <Products products={products} onAddToCart={handleAddToCart}></Products>
+            <Cart cart={cart}></Cart>
         </div>
     );
 }

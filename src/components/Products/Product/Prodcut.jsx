@@ -1,4 +1,5 @@
 // Layout for one specific product
+// Contains all the styling for the actual card itself
 // Child of Products.jsx
 import React from "react";
 import { Card, CardMedia, CardContent, CardActions, Typography, IconButton } from "@material-ui/core";
@@ -7,8 +8,9 @@ import { AddShoppingCart } from "@material-ui/icons";
 import useStyles from "./styles";
 
 // Destructing passed in values
-const Prodcut = ({ product }) => {
+const Prodcut = ({ product, onAddToCart }) => {
     const classes = useStyles();
+    const numOfItemsToAdd = 1;
 
     return (
         <div>
@@ -24,7 +26,9 @@ const Prodcut = ({ product }) => {
                     <Typography dangerouslySetInnerHTML={{ __html: product.description }} variant="body2" color="textSecondary"></Typography>
                 </CardContent>
                 <CardActions disableSpacing className={classes.cardActions}>
-                    <IconButton aria-label="Add to Card">
+                    {/* onClick Callback function so that it doesn't call itself imedietly  */}
+                    {/* Pass in the id of the product  */}
+                    <IconButton aria-label="Add to Card" onClick={() => onAddToCart(product.id, numOfItemsToAdd)}>
                         <AddShoppingCart></AddShoppingCart>
                     </IconButton>
                 </CardActions>

@@ -8,7 +8,7 @@ import useStyles from "./styles";
 const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart }) => {
     const classes = useStyles();
 
-    // ! Becareful using parentheses vs brackets for arrow functions  
+    // ! Becareful using parentheses vs brackets for arrow functions
     const EmptyCart = () => (
         <Typography variant="subtitle1">
             You have no items in your shopping cart, start adding some!
@@ -19,7 +19,6 @@ const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart
         </Typography>
     );
 
-    
     const FilledCart = () => (
         <>
             <Grid container spacing={3}>
@@ -39,7 +38,7 @@ const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart
                     <Button className={classes.emptyButton} onClick={handleEmptyCart} size="large" type="button" variant="contained" color="secondary">
                         Empty Cart
                     </Button>
-                    <Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">
+                    <Button component={Link} to="/checkout" className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">
                         Checkout
                     </Button>
                 </div>

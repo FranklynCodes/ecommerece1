@@ -5,26 +5,29 @@ import { Link } from "react-router-dom";
 import CartItem from "./CartItem/CartItem";
 import useStyles from "./styles";
 
-const Cart = ({ cart }) => {
+const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart }) => {
     const classes = useStyles();
 
-    const EmptyCart = () => {
+    // ! Becareful using parentheses vs brackets for arrow functions  
+    const EmptyCart = () => (
         <Typography variant="subtitle1">
             You have no items in your shopping cart, start adding some!
             <Link to="/" className={classes.link}>
                 Start Adding Some
             </Link>
             !
-        </Typography>;
-    };
+        </Typography>
+    );
 
+    
     const FilledCart = () => (
         <>
             <Grid container spacing={3}>
                 {/* instenanous fnc */}
                 {cart.line_items.map((item) => (
                     <Grid item xs={12} sm={4} key={item.id}>
-                        <CartItem item={item} />
+                        {/* // ! Refactor handleUpdateCart... to onUpdateCart...  */}
+                        <CartItem item={item} onUpdateCartQty={handleUpdateCartQty} onRemoveFromCart={handleRemoveFromCart} />
                         {/* <div>{item.name}</div> */}
                     </Grid>
                 ))}
@@ -33,7 +36,7 @@ const Cart = ({ cart }) => {
             <div className={classes.cardDetails}>
                 <Typography variant="h4">Subtotal: {cart.subtotal.formatted_with_symbol}</Typography>
                 <div>
-                    <Button className={classes.emptyButton} size="large" type="button" variant="contained" color="secondary">
+                    <Button className={classes.emptyButton} onClick={handleEmptyCart} size="large" type="button" variant="contained" color="secondary">
                         Empty Cart
                     </Button>
                     <Button className={classes.checkoutButton} size="large" type="button" variant="contained" color="primary">

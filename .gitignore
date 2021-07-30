@@ -22,7 +22,10 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+
+#Personal 
 /npm.txt
 /Secuirty.txt
 React_Notes.jsx
-
+Problems.txt
+Future.txt

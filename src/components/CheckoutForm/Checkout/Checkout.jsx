@@ -2,11 +2,18 @@ import React, { useState } from "react";
 import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from "@material-ui/core";
 
 import useStyles from "./styles";
+import AddressForm from "../AddressForm";
+import PaymentForm from "../PaymentForm";
 
 const steps = ["Shipping Address", "Payment Details"];
+
 export default function Checkout() {
+    const [activeStep, setActiveStep] = useState(2);
     const classes = useStyles();
-    const [ActiveStep, setActiveStep] = useState(0);
+
+    const Confirmation = () => (<div>Confirmation</div>);
+
+    const Form = () => (activeStep === 0 ? <AddressForm/> : <PaymentForm/>);
 
     return (
         <>
@@ -16,13 +23,14 @@ export default function Checkout() {
                     <Typography variant="h4" align="center">
                         Checkout
                     </Typography>
-                    <Stepper activeStep={0} className={classes.stepper}>
+                    <Stepper activeStep={activeStep} className={classes.stepper}>
                         {steps.map((step) => (
                             <Step key={step}>
                                 <StepLabel>{step}</StepLabel>
                             </Step>
                         ))}
                     </Stepper>
+                    {activeStep === steps.length ? <Confirmation /> : <Form />}
                 </Paper>
             </main>
         </>

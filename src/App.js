@@ -5,13 +5,13 @@
  */
 
 import React, { useState, useEffect } from "react";
+import { NavBar, Products, Cart } from "./components";
 import { commerce } from "./lib/commerce";
-import { Products, NavBar, Cart } from "./components";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 // import { Cart } from "@chec/commerce.js/features/cart";
 
 export default function App() {
     const [products, setProducts] = useState([]);
-
     const [cart, setCart] = useState({});
 
     //  Fetch the Products on load
@@ -40,15 +40,23 @@ export default function App() {
         fetchCart();
     }, []);
 
-    console.log("products:", products);
-    console.log("cart:", cart);
+    // console.log("products:", products);
+    // console.log("cart:", cart);
 
     return (
-        <div id="App">
-            <NavBar totalItems={cart.total_items} />
-            <Products products={products} onAddToCart={handleAddToCart}></Products>
-            <Cart cart={cart}></Cart>
-        </div>
+        <Router>
+            <div>
+                <NavBar totalItems={cart.total_items} />
+                <Switch>
+                    <Route exact path="/">
+                        <Products products={products} onAddToCart={handleAddToCart}></Products>
+                    </Route>
+                    <Route exact path="/cart">
+                        <Cart cart={cart} />
+                    </Route>
+                </Switch>
+            </div>
+        </Router>
     );
 }
 // Calcback function so that it doesn't call itself imedietly

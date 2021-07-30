@@ -8,7 +8,15 @@ import useStyles from "./styles";
 const Cart = ({ cart }) => {
     const classes = useStyles();
 
-    const EmptyCart = () => <Typography variant="subtitle1">You have no items in your shopping cart, start adding some!</Typography>;
+    const EmptyCart = () => {
+        <Typography variant="subtitle1">
+            You have no items in your shopping cart, start adding some!
+            <Link to="/" className={classes.link}>
+                Start Adding Some
+            </Link>
+            !
+        </Typography>;
+    };
 
     const FilledCart = () => (
         <>
@@ -16,7 +24,7 @@ const Cart = ({ cart }) => {
                 {/* instenanous fnc */}
                 {cart.line_items.map((item) => (
                     <Grid item xs={12} sm={4} key={item.id}>
-                        <CartItem item={item}></CartItem>
+                        <CartItem item={item} />
                         {/* <div>{item.name}</div> */}
                     </Grid>
                 ))}

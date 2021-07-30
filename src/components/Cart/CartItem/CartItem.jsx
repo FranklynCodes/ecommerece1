@@ -5,6 +5,7 @@ import useStyles from "./styles";
 
 const CartItem = ({ item }) => {
     const classes = useStyles();
+    console.log(item);
 
     return (
         <Card className="cart-item">
@@ -15,11 +16,11 @@ const CartItem = ({ item }) => {
             </CardContent>
             <CardActions className={classes.cardActions}>
                 <div className={classes.buttons}>
-                    <Button type="button" size="small" >
+                    <Button type="button" size="small">
                         -
                     </Button>
                     <Typography>{item.quantity}</Typography>
-                    <Button type="button" size="small" >
+                    <Button type="button" size="small">
                         +
                     </Button>
                 </div>

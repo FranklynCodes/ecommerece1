@@ -18,7 +18,7 @@ export default function Navbar({ totalItems }) {
                 <Toolbar>
                     <Typography component={Link} to="/" variant="h6" className="classes.title" color="inherit">
                         <img src={logo} alt="Commere Site" height="25px" className={classes.image} />
-                        Gem Store
+                        PlaceHolder Store
                     </Typography>
                     {/* classes.grow takes up remaining space */}
                     <div className={classes.grow}></div>

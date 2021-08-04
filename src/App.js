@@ -76,7 +76,8 @@ export default function App() {
                         />
                     </Route>
                     <Route exact path="/checkout">
-                        <Checkout></Checkout>
+                        {/* Cart is passed down to child component as a prop in order to  */}
+                        <Checkout cart={cart}></Checkout>
                     </Route>
                 </Switch>
             </div>

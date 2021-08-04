@@ -1,24 +1,38 @@
-import React from "react";
-import { InputLabel, Select, MenuItem, Button, Grid, Typography } from "@material-ui/core";
-import { useForm, FormProvider } from "react-hook-form";
-// import CustomFormInput from "./";
+import React, { useState, useEffect } from 'react';
+import { InputLabel, Select, MenuItem, Button, Grid, Typography } from '@material-ui/core';
+import { useForm, FormProvider } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 
-import FormInput from "./CustomTextField";
+import { commerce } from '../../lib/commerce';
+import FormInput from './CustomTextField';
 
-import { commerce } from "../../../lib/commerce";
-
+// import { Checkout } from "@chec/commerce.js/features/checkout";
 
 // Connecting ReactHooks to MaterialUI text input
-export default function AddressForm() {
-    // Create State varibles to store commerece api variables 
-    const [shippingCountries, setShippingCountries] = useState([])
-    const [shippingCountry, setShippingCountry] = useState('')
-    const [shippingSubdivisions, setShippingSubdivisions] = useState([])
-    const [shippingSubdivision, setShippingSubdivision] = useState('')
-    const [shippingOptions, setShippingOptions] = useState([])
-    const [shippingOption, setShippingOption] = useState('')
-
+export default function AddressForm({ checkoutToken }) {
+    console.log('checkoutToken:', checkoutToken)    
+    console.log('checkoutToken.id:', checkoutToken.id)
+    // Create State varibles to store commerece api variables
+    const [shippingCountries, setShippingCountries] = useState([]);
+    const [shippingCountry, setShippingCountry] = useState('');
+    const [shippingSubdivisions, setShippingSubdivisions] = useState([]);
+    const [shippingSubdivision, setShippingSubdivision] = useState('');
+    const [shippingOptions, setShippingOptions] = useState([]);
+    const [shippingOption, setShippingOption] = useState('');
     
+
+    // Recipe ID = checkoutTokenId
+    // console.log('checkoutTokenId:', checkoutToken)
+    const fetchShippingCountries = async (checkoutTokenId) => {
+        const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
+        console.log("countries:", countries);
+        setShippingCountries(countries);
+    };
+
+    useEffect(() => {
+        // fetchShippingCountries(checkoutToken.id);
+    }, []);
+
     const methods = useForm();
 
     return (
@@ -37,7 +51,7 @@ export default function AddressForm() {
                         <FormInput require name="city" label="City"></FormInput>
                         <FormInput require name="zip" label="Zip / Postal code"></FormInput>
                         {/* Wrap this Grid  */}
-                        <Grid item xs={12} sm = {6}>
+                        {/* <Grid item xs={12} sm = {6}>
                             <InputLabel>Shipping Country </InputLabel>
                             <Select value={""} fullWidth onChange={}>
                                 <MenuItem key={} value={}>
@@ -60,8 +74,7 @@ export default function AddressForm() {
                                     Select Me 
                                 </MenuItem>                                
                             </Select>
-                        </Grid>
-
+                        </Grid> */}
                     </Grid>
                 </form>
             </FormProvider>

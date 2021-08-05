@@ -30,7 +30,7 @@ export default function AddressForm({ checkoutToken }) {
     };
 
     useEffect(() => {
-        // fetchShippingCountries(checkoutToken.id);
+        fetchShippingCountries(checkoutToken.id);
     }, []);
 
     const methods = useForm();

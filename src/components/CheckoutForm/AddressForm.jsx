@@ -11,7 +11,7 @@ import FormInput from "./CustomTextField";
 // Connecting ReactHooks to MaterialUI text input
 export default function AddressForm({ checkoutToken }) {
     console.log("checkoutToken:", checkoutToken);
-    // console.log("checkoutToken.id:", checkoutToken.id);
+    console.log("checkoutToken.id:", checkoutToken.id);
     // Create State varibles to store commerece api variables
     const [shippingCountries, setShippingCountries] = useState([]);
     const [shippingCountry, setShippingCountry] = useState("");
@@ -36,7 +36,7 @@ export default function AddressForm({ checkoutToken }) {
     };
 
     useEffect(() => {
-        // fetchShippingCountries(checkoutToken.id);
+        fetchShippingCountries(checkoutToken.id);
     }, []);
 
     return (
@@ -60,7 +60,7 @@ export default function AddressForm({ checkoutToken }) {
                             <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
                                 {/* Below is a array of arrays  */}
                                 {countries.map((country) => (
-                                    <MenuItem Key={country.id} value={country.id}>
+                                    <MenuItem key={country.id} value={country.id}>
                                         {country.label}
                                     </MenuItem>
                                 ))}

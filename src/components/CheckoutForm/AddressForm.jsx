@@ -11,7 +11,7 @@ import FormInput from "./CustomTextField";
 // Connecting ReactHooks to MaterialUI text input
 export default function AddressForm({ checkoutToken }) {
     console.log("checkoutToken:", checkoutToken);
-    console.log("checkoutToken.id:", checkoutToken.id);
+    // console.log("checkoutToken.id:", checkoutToken.id);
     // Create State varibles to store commerece api variables
     const [shippingCountries, setShippingCountries] = useState([]);
     const [shippingCountry, setShippingCountry] = useState("");
@@ -19,23 +19,25 @@ export default function AddressForm({ checkoutToken }) {
     const [shippingSubdivision, setShippingSubdivision] = useState("");
     const [shippingOptions, setShippingOptions] = useState([]);
     const [shippingOption, setShippingOption] = useState("");
+    const methods = useForm();
+
+    const countries = Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name }));
+    console.log("countries:", countries);
 
     // Recipe ID = checkoutTokenId
     // console.log('checkoutTokenId:', checkoutToken)
     const fetchShippingCountries = async (checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
         console.log("countries:", countries);
-        setShippingCountries(countries); 
-        // countries is a object, so we cannot access it normally like a array, and we can't use keys individually, want it to dynamically update 
+        setShippingCountries(countries);
+        // countries is a object, so we cannot access it normally like a array, and we can't use keys individually, want it to dynamically update
 
         setShippingCountry(Object.keys(countries)[0]);
     };
 
     useEffect(() => {
-        fetchShippingCountries(checkoutToken.id);
+        // fetchShippingCountries(checkoutToken.id);
     }, []);
-
-    const methods = useForm();
 
     return (
         <>
@@ -53,15 +55,15 @@ export default function AddressForm({ checkoutToken }) {
                         <FormInput require name="city" label="City"></FormInput>
                         <FormInput require name="zip" label="Zip / Postal code"></FormInput>
                         {/* Wrap this Grid  */}
-                        <Grid item xs={12} sm = {6}>
+                        <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Country </InputLabel>
-                            <Select value={shippingCountry} fullWidth onChange={(e)=> setShippingCountry(e.target.value)}>
+                            <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
                                 {/* Below is a array of arrays  */}
-                                {Object.entries(shippingCountries)}
-                                {console.log('Object.entries(shippingCountries):', Object.entries(shippingCountries))}
-                                {/* <MenuItem key={} value={}>
-                                    Select Me 
-                                </MenuItem>                                 */}
+                                {countries.map((country) => (
+                                    <MenuItem Key={country.id} value={country.id}>
+                                        {country.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Grid>
                         {/* <Grid item xs={12} sm = {6}>

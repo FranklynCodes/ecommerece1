@@ -22,13 +22,17 @@ export default function Checkout({ cart }) {
                 const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
                 console.log("token:", token);
                 setCheckoutToken(token);
-            } catch (error) {}
+            } catch (error) {
+                
+            }
         };
         generateToken();
     }, []);
 
     const Confirmation = () => <div>Confirmation</div>;
     // Passing in checkoutToken as a prop to addressForm
+    // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle 
+    console.log('CheckoutFile\tcheckoutToken:', checkoutToken)
     const Form = () => (activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} /> : <PaymentForm />);
 
     return (

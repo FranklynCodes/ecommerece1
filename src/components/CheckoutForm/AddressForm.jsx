@@ -10,8 +10,10 @@ import FormInput from "./CustomTextField";
 
 // Connecting ReactHooks to MaterialUI text input
 export default function AddressForm({ checkoutToken }) {
-    console.log("checkoutToken:", checkoutToken);
-    console.log("checkoutToken.id:", checkoutToken.id);
+    // console.log("checkoutToken:", checkoutToken);
+    // console.log("checkoutToken.id:", checkoutToken.id);
+
+
     // Create State varibles to store commerece api variables
     const [shippingCountries, setShippingCountries] = useState([]);
     const [shippingCountry, setShippingCountry] = useState("");

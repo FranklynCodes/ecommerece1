@@ -10,9 +10,8 @@ import FormInput from "./CustomTextField";
 
 // Connecting ReactHooks to MaterialUI text input
 export default function AddressForm({ checkoutToken }) {
-    // console.log("checkoutToken:", checkoutToken);
+    console.log("checkoutToken:", checkoutToken);
     // console.log("checkoutToken.id:", checkoutToken.id);
-
 
     // Create State varibles to store commerece api variables
     const [shippingCountries, setShippingCountries] = useState([]);
@@ -23,7 +22,9 @@ export default function AddressForm({ checkoutToken }) {
     const [shippingOption, setShippingOption] = useState("");
     const methods = useForm();
 
+    // Object must be typecasted in a useState EMPTY ARRAY
     const countries = Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name }));
+    const subdivisons = Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name }));
     console.log("countries:", countries);
 
     // Recipe ID = checkoutTokenId
@@ -37,9 +38,25 @@ export default function AddressForm({ checkoutToken }) {
         setShippingCountry(Object.keys(countries)[0]);
     };
 
+    const fetchSubdivisions = async (countryCode) => {
+        const { subdivisions } = await commerce.services.localeListSubdivisions(countryCode);
+        setShippingSubdivisions(subdivisions);
+        setShippingSubdivision(Object.keys(subdivisions)[0]); // Inital Starting Point for keys of object, Base Case 0
+    };
+
     useEffect(() => {
         fetchShippingCountries(checkoutToken.id);
     }, []);
+    // One dependency, whenever shippingCountry changes then we need to call what is inside the useEffect, fetchSubdivisions()
+    // After display select field based on select field
+    // ? When to use, useEffect multiple times? When does it make sense to?
+    useEffect(() => {
+        // ! Its okay using multiple useEffects as long as its nessecaaary
+        // if shippingCountry exists then run fetchSubdivision method
+        if (shippingCountry) {
+            fetchSubdivisions(shippingCountry);
+        }
+    }, [shippingCountry]);
 
     return (
         <>
@@ -58,7 +75,7 @@ export default function AddressForm({ checkoutToken }) {
                         <FormInput require name="zip" label="Zip / Postal code"></FormInput>
                         {/* Wrap this Grid  */}
                         <Grid item xs={12} sm={6}>
-                            <InputLabel>Shipping Country </InputLabel>
+                            <InputLabel>Shipping Country</InputLabel>
                             <Select value={shippingCountry} fullWidth onChange={(e) => setShippingCountry(e.target.value)}>
                                 {/* Below is a array of arrays  */}
                                 {countries.map((country) => (
@@ -68,15 +85,18 @@ export default function AddressForm({ checkoutToken }) {
                                 ))}
                             </Select>
                         </Grid>
-                        {/* <Grid item xs={12} sm = {6}>
-                            <InputLabel>Shipping Subdivision </InputLabel>
-                            <Select value={""} fullWidth onChange={}>
-                                <MenuItem key={} value={}>
-                                    Select Me 
-                                </MenuItem>                                
+                        <Grid item xs={12} sm={6}>
+                            <InputLabel>Shipping Subdivision</InputLabel>
+                            <Select value={shippingSubdivision} fullWidth onChange={(e) => setShippingSubdivision(e.target.value)}>
+                                {/* Below is a array of arrays  */}
+                                {subdivisons.map((subdivision) => (
+                                    <MenuItem key={subdivision.id} value={subdivision.id}>
+                                        {subdivision.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
                         </Grid>
-                        <Grid item xs={12} sm = {6}>
+                        {/* <Grid item xs={12} sm = {6}>
                             <InputLabel>Shipping Options </InputLabel>
                             <Select value={""} fullWidth onChange={}>
                                 <MenuItem key={} value={}>

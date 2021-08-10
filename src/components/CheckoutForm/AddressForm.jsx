@@ -33,13 +33,13 @@ export default function AddressForm({ checkoutToken, next }) {
         label: `${shippingO.description} - (${shippingO.price.formatted_with_symbol})`,
     }));
 
-    // console.log("countries:", shippingOptions); // ! 
+    // console.log("countries:", shippingOptions); // !
 
     // Recipe ID = checkoutTokenId
     // console.log('checkoutTokenId:', checkoutToken)
     const fetchShippingCountries = async (checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
-        // console.log("countries:", countries); // ! 
+        // console.log("countries:", countries); // !
         setShippingCountries(countries);
         // countries is a object, so we cannot access it normally like a array, and we can't use keys individually, want it to dynamically update
 
@@ -59,15 +59,10 @@ export default function AddressForm({ checkoutToken, next }) {
         setShippingOption(options[0].id);
     };
 
-    useEffect(() => {        
-        if(checkoutToken === null){
-            console.log("CheckoutToken id is equal to null, re-run to update")
-        }else{
-            fetchShippingCountries(checkoutToken.id);
-            console.log('fetchShippingCountries(checkoutToken.id);:', fetchShippingCountries(checkoutToken.id))
-            console.log('checkoutToken.id:', checkoutToken.id)
-        }
+    useEffect(() => {
+        fetchShippingCountries(checkoutToken.id);
     }, []);
+
     // One dependency, whenever shippingCountry changes then we need to call what is inside the useEffect, fetchSubdivisions()
     // After display select field based on select field
     // ? When to use, useEffect multiple times? When does it make sense to?

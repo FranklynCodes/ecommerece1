@@ -11,6 +11,7 @@ const steps = ["Shipping Address", "Payment Details"];
 export default function Checkout({ cart }) {
     const [checkoutToken, setCheckoutToken] = useState(null); // maybe
     const [activeStep, setActiveStep] = useState(0);
+    const [shippingData, setShippingData] = useState({}); // Data that is being passed in from addressForm
     const classes = useStyles();
 
     // Initally component did mount, only happens once at the start
@@ -21,19 +22,36 @@ export default function Checkout({ cart }) {
             try {
                 const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
                 console.log("token:", token);
+                console.log("token:", token.cart_id);
                 setCheckoutToken(token);
-            } catch (error) {
-                
-            }
+            } catch (error) {}
         };
         generateToken();
-    }, []);
+    }, [cart]);
+
+    // When your settinig the state with react using a previous state you need to use a callback function
+
+    const nextStep = () => setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    const backStep = () => setActiveStep((prevActiveStep) => prevActiveStep - 1);
+
+    // shippingData
+    const next = (data) => {
+        setShippingData(data);
+        nextStep();
+    };
 
     const Confirmation = () => <div>Confirmation</div>;
     // Passing in checkoutToken as a prop to addressForm
-    // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle 
-    console.log('CheckoutFile\tcheckoutToken:', checkoutToken)
-    const Form = () => (activeStep === 0 ? <AddressForm checkoutToken={checkoutToken} /> : <PaymentForm />);
+    // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle
+    console.log("Checkout\tFile\tcheckoutToken\TOBJECT:", checkoutToken);
+    const Form = () =>
+    
+        (activeStep === 0 ? (
+            
+            <AddressForm checkoutToken={checkoutToken} next={next} />
+        ) : (
+            <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
+        ));
 
     return (
         <>

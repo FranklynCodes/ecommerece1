@@ -9,8 +9,9 @@ import FormInput from "./CustomTextField";
 // import { Checkout } from "@chec/commerce.js/features/checkout";
 
 // Connecting ReactHooks to MaterialUI text input
-export default function AddressForm({ checkoutToken }) {
-    console.log("checkoutToken:", checkoutToken);
+export default function AddressForm({ checkoutToken, next }) {
+    // var temp = checkoutToken.id;
+    // console.log("checkoutToken:", checkoutToken);
     // console.log("checkoutToken.id:", checkoutToken.id);
 
     // Create State varibles to store commerece api variables
@@ -24,14 +25,21 @@ export default function AddressForm({ checkoutToken }) {
 
     // Object must be typecasted in a useState EMPTY ARRAY
     const countries = Object.entries(shippingCountries).map(([code, name]) => ({ id: code, label: name }));
+
     const subdivisons = Object.entries(shippingSubdivisions).map(([code, name]) => ({ id: code, label: name }));
-    console.log("countries:", countries);
+
+    const options = shippingOptions.map((shippingO) => ({
+        id: shippingO.id,
+        label: `${shippingO.description} - (${shippingO.price.formatted_with_symbol})`,
+    }));
+
+    // console.log("countries:", shippingOptions); // ! 
 
     // Recipe ID = checkoutTokenId
     // console.log('checkoutTokenId:', checkoutToken)
     const fetchShippingCountries = async (checkoutTokenId) => {
         const { countries } = await commerce.services.localeListShippingCountries(checkoutTokenId);
-        console.log("countries:", countries);
+        // console.log("countries:", countries); // ! 
         setShippingCountries(countries);
         // countries is a object, so we cannot access it normally like a array, and we can't use keys individually, want it to dynamically update
 
@@ -44,8 +52,21 @@ export default function AddressForm({ checkoutToken }) {
         setShippingSubdivision(Object.keys(subdivisions)[0]); // Inital Starting Point for keys of object, Base Case 0
     };
 
-    useEffect(() => {
-        fetchShippingCountries(checkoutToken.id);
+    const fetchShippingOptions = async (checkoutTokenId, country, region = null) => {
+        const options = await commerce.checkout.getShippingOptions(checkoutTokenId, { country, region });
+
+        setShippingOptions(options);
+        setShippingOption(options[0].id);
+    };
+
+    useEffect(() => {        
+        if(checkoutToken === null){
+            console.log("CheckoutToken id is equal to null, re-run to update")
+        }else{
+            fetchShippingCountries(checkoutToken.id);
+            console.log('fetchShippingCountries(checkoutToken.id);:', fetchShippingCountries(checkoutToken.id))
+            console.log('checkoutToken.id:', checkoutToken.id)
+        }
     }, []);
     // One dependency, whenever shippingCountry changes then we need to call what is inside the useEffect, fetchSubdivisions()
     // After display select field based on select field
@@ -58,6 +79,12 @@ export default function AddressForm({ checkoutToken }) {
         }
     }, [shippingCountry]);
 
+    useEffect(() => {
+        if (shippingSubdivision) {
+            fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision);
+        }
+    }, [shippingSubdivision]);
+
     return (
         <>
             <Typography variant="h6" gutterBottom>
@@ -65,8 +92,10 @@ export default function AddressForm({ checkoutToken }) {
             </Typography>
             {/* Destructing the methods from useForm Lib */}
             <FormProvider {...methods}>
-                <form onSubmit="">
+                {/* Data object contains everything below  */}
+                <form onSubmit={methods.handleSubmit((data) => next({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}>
                     <Grid container spacing={3}>
+                        {/* Data and Grid Data Two different data, that you need to manipulate with object manipulation */}
                         <FormInput require name="firstName" label="First name"></FormInput>
                         <FormInput require name="lastName" label="Last name"></FormInput>
                         <FormInput require name="address1" label="Address"></FormInput>
@@ -96,15 +125,32 @@ export default function AddressForm({ checkoutToken }) {
                                 ))}
                             </Select>
                         </Grid>
-                        {/* <Grid item xs={12} sm = {6}>
+                        <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Options </InputLabel>
-                            <Select value={""} fullWidth onChange={}>
-                                <MenuItem key={} value={}>
-                                    Select Me 
-                                </MenuItem>                                
+                            <Select
+                                value={shippingOption}
+                                fullWidth
+                                onChange={(e) => {
+                                    setShippingOption(e.target.value);
+                                }}
+                            >
+                                {options.map((option) => (
+                                    <MenuItem key={option.id} value={option.id}>
+                                        {option.label}
+                                    </MenuItem>
+                                ))}
                             </Select>
-                        </Grid> */}
+                        </Grid>
                     </Grid>
+                    <br />
+                    <div style={{ display: "flex", justifyContent: "space-between" }}>
+                        <Button component={Link} to="/cart" variant="outlined">
+                            Back to Cart
+                        </Button>
+                        <Button type="sumbit" variant="contained" color="primary">
+                            Next
+                        </Button>
+                    </div>
                 </form>
             </FormProvider>
         </>

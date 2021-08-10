@@ -43,15 +43,13 @@ export default function Checkout({ cart }) {
     const Confirmation = () => <div>Confirmation</div>;
     // Passing in checkoutToken as a prop to addressForm
     // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle
-    console.log("Checkout\tFile\tcheckoutToken\TOBJECT:", checkoutToken);
+    console.log("Checkout\tFile\tcheckoutTokenTOBJECT:", checkoutToken);
     const Form = () =>
-    
-        (activeStep === 0 ? (
-            
+        activeStep === 0 ? (
             <AddressForm checkoutToken={checkoutToken} next={next} />
         ) : (
             <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
-        ));
+        );
 
     return (
         <>
@@ -68,7 +66,7 @@ export default function Checkout({ cart }) {
                             </Step>
                         ))}
                     </Stepper>
-                    {activeStep === steps.length ? <Confirmation /> : <Form />}
+                    {activeStep === steps.length ? <Confirmation /> : checkoutToken &&<Form />}
                 </Paper>
             </main>
         </>

@@ -8,7 +8,7 @@ import useStyles from "./styles";
 
 const steps = ["Shipping Address", "Payment Details"];
 
-export default function Checkout({ cart }) {
+export default function Checkout({ cart, order, onCaptureCheckout, error }) {
     const [checkoutToken, setCheckoutToken] = useState(null); // maybe
     const [activeStep, setActiveStep] = useState(0);
     const [shippingData, setShippingData] = useState({}); // Data that is being passed in from addressForm
@@ -22,7 +22,6 @@ export default function Checkout({ cart }) {
             try {
                 const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
                 console.log("token:", token);
-                console.log("token:", token.cart_id);
                 setCheckoutToken(token);
             } catch (error) {}
         };
@@ -48,7 +47,13 @@ export default function Checkout({ cart }) {
         activeStep === 0 ? (
             <AddressForm checkoutToken={checkoutToken} next={next} />
         ) : (
-            <PaymentForm shippingData={shippingData} checkoutToken={checkoutToken} />
+            <PaymentForm
+                shippingData={shippingData}
+                checkoutToken={checkoutToken}
+                nextStep={nextStep}
+                backStep={backStep}
+                onCaptureCheckout={onCaptureCheckout}
+            />
         );
 
     return (
@@ -66,7 +71,7 @@ export default function Checkout({ cart }) {
                             </Step>
                         ))}
                     </Stepper>
-                    {activeStep === steps.length ? <Confirmation /> : checkoutToken &&<Form />}
+                    {activeStep === steps.length ? <Confirmation /> : checkoutToken && <Form />}
                 </Paper>
             </main>
         </>

@@ -12,6 +12,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 export default function App() {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState({});
+    const [order, setOrder] = useState({});
+    const [errorMessage, setErrorMessage] = useState("");
 
     //  Fetch the Products on load
     const fetchProducts = async () => {
@@ -51,6 +53,24 @@ export default function App() {
         setCart(cart);
     };
 
+    // When order is done you need to refresh the entire cart
+    // You should not have all the items stay in the cart because the order is already done
+    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+            setOrder(incomingOrder);
+            refreshCart();
+        } catch (error) {
+            setErrorMessage(error.data.error.message);
+        }
+    };
+
+    // Removes/refreshes the cart function
+    const refreshCart = async () => {
+        const newCart = await commerce.cart.refresh();
+        setCart(newCart);
+    };
+
     useEffect(() => {
         fetchProducts();
         fetchCart();
@@ -77,7 +97,7 @@ export default function App() {
                     </Route>
                     <Route exact path="/checkout">
                         {/* Cart is passed down to child component as a prop in order to  */}
-                        <Checkout cart={cart}></Checkout>
+                        <Checkout cart={cart} order={order} onCaptureCheckout={handleCaptureCheckout} error={errorMessage}></Checkout>
                     </Route>
                 </Switch>
             </div>

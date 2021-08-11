@@ -39,7 +39,12 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
         nextStep();
     };
 
-    const Confirmation = () => <div>Confirmation</div>;
+    const Confirmation = () => (
+        <>
+            
+            <div>Confirmation</div>
+        </>
+    );
     // Passing in checkoutToken as a prop to addressForm
     // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle
     console.log("Checkout\tFile\tcheckoutTokenTOBJECT:", checkoutToken);

@@ -13,6 +13,8 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
     const [checkoutToken, setCheckoutToken] = useState(null); // maybe
     const [activeStep, setActiveStep] = useState(0);
     const [shippingData, setShippingData] = useState({}); // Data that is being passed in from addressForm
+    const [isFinished, setIsFinished] = useState(false);
+
     const classes = useStyles();
     const history = useHistory();
 
@@ -45,6 +47,13 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
         nextStep();
     };
 
+    // Demonstrating Demo Time Out | Passed into Payments Form
+    const timeout = () => {
+        setTimeout(() => {
+            setIsFinished(true);
+        }, 3000);
+    };
+
     let Confirmation = () =>
         // If order Customer exists then load block, if not load spinner
         order.customer ? (
@@ -55,6 +64,20 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
                     </Typography>
                     <Divider className={classes.divider}></Divider>
                     <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
+                </div>
+                <br />
+                <Button component={Link} to="/" variant="outlined" type="button">
+                    Back to Home
+                </Button>
+            </>
+        ) : // or is finished show parentes if its not show outer parentheses
+        isFinished ? (
+            <>
+                <div>
+                    <Typography variant="h5">Thank you for your purchase! </Typography>
+                    {/* <Typography variant="h5">Thank you for your purchase! order_customer_firstname - order_customer_lastname</Typography> */}
+                    <Divider className={classes.divider}></Divider>
+                    {/* <Typography variant="subtitle2">Order ref: order_customer_reference</Typography> */}
                 </div>
                 <br />
                 <Button component={Link} to="/" variant="outlined" type="button">
@@ -89,6 +112,7 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
                 nextStep={nextStep}
                 backStep={backStep}
                 onCaptureCheckout={onCaptureCheckout}
+                timeout={timeout}
             />
         );
 

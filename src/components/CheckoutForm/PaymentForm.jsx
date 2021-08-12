@@ -7,7 +7,7 @@ import Review from "./Review";
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLIC_KEY);
 
-export default function PaymentForm({ checkoutToken, shippingData, backStep, onCaptureCheckout, nextStep }) {
+export default function PaymentForm({ checkoutToken, shippingData, backStep, onCaptureCheckout, nextStep, timeout }) {
     const handleSumbit = async (event, elements, stripe) => {
         event.preventDefault();
 
@@ -43,7 +43,7 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
                 },
             };
             onCaptureCheckout(checkoutToken.id, orderData);
-
+            timeout();
             nextStep();
         }
     };

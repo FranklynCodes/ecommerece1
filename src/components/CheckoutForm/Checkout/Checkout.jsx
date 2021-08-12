@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button } from "@material-ui/core";
+import { Paper, Stepper, Step, StepLabel, Typography, CircularProgress, Divider, Button, CssBaseline } from "@material-ui/core";
 
 import { commerce } from "../../../lib/commerce";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
 import useStyles from "./styles";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const steps = ["Shipping Address", "Payment Details"];
 
@@ -14,6 +14,7 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
     const [activeStep, setActiveStep] = useState(0);
     const [shippingData, setShippingData] = useState({}); // Data that is being passed in from addressForm
     const classes = useStyles();
+    const history = useHistory();
 
     // Initally component did mount, only happens once at the start
     // ! useEffect does not allow the use of async unless its a new function
@@ -25,6 +26,8 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
                 console.log("token:", token);
                 setCheckoutToken(token);
             } catch (error) {
+                // Error occurs when you actually do the order but then refresh the page Commerce.js will not be able togenerate a token because the cart is empty
+                history.push("/");
                 console.log("Checkout Error Details", error);
             }
         };
@@ -91,6 +94,7 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
 
     return (
         <>
+            <CssBaseline />
             <div className={classes.toolbar}></div>
             <main className={classes.layout}>
                 <Paper className={classes.paper}>

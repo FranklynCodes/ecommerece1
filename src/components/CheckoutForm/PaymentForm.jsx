@@ -29,7 +29,7 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
                     name: "Primary",
                     street: shippingData.address1,
                     towncity: shippingData.city,
-                    country_state: shippingData.shippingData.shippingSubdivision,
+                    county_state: shippingData.shippingSubdivision,
                     postal_zip_code: shippingData.zip,
                     country: shippingData.shippingCountry,
                 },

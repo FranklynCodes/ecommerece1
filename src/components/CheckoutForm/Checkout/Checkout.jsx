@@ -5,6 +5,7 @@ import { commerce } from "../../../lib/commerce";
 import AddressForm from "../AddressForm";
 import PaymentForm from "../PaymentForm";
 import useStyles from "./styles";
+import { Link } from "react-router-dom";
 
 const steps = ["Shipping Address", "Payment Details"];
 
@@ -23,7 +24,9 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
                 const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
                 console.log("token:", token);
                 setCheckoutToken(token);
-            } catch (error) {}
+            } catch (error) {
+                console.log("Checkout Error Details", error);
+            }
         };
         generateToken();
     }, [cart]);
@@ -39,12 +42,37 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
         nextStep();
     };
 
-    const Confirmation = () => (
+    let Confirmation = () =>
+        // If order Customer exists then load block, if not load spinner
+        order.customer ? (
+            <>
+                <div>
+                    <Typography variant="h5">
+                        Thank you for your purchase, {order.customer.firstname} - {order.customer.lastname}
+                    </Typography>
+                    <Divider className={classes.divider}></Divider>
+                    <Typography variant="subtitle2">Order ref: {order.customer_reference}</Typography>
+                </div>
+                <br />
+                <Button component={Link} to="/" variant="outlined" type="button">
+                    Back to Home
+                </Button>
+            </>
+        ) : (
+            <div className={classes.spinner}>
+                <CircularProgress></CircularProgress>
+            </div>
+        );
+
+    if (error) {
         <>
-            
-            <div>Confirmation</div>
-        </>
-    );
+            <Typography variant="h5">Error:{error}</Typography>
+            <br />
+            <Button component={Link} to="/" variant="outlined" type="button">
+                Back to Home
+            </Button>
+        </>;
+    }
     // Passing in checkoutToken as a prop to addressForm
     // ? Possibily could be async, to avoid checkoutToken issue not applying at the correct order of run time, However the respone l get from the api is already declared as async in useEffect of This FIle
     console.log("Checkout\tFile\tcheckoutTokenTOBJECT:", checkoutToken);

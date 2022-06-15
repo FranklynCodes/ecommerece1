@@ -60,7 +60,8 @@ export default function AddressForm({ checkoutToken, next }) {
     };
 
     useEffect(() => {
-        fetchShippingCountries(checkoutToken.id);
+        fetchShippingCountries(checkoutToken.id); 
+        // eslint-disable-next-line
     }, []);
 
     // One dependency, whenever shippingCountry changes then we need to call what is inside the useEffect, fetchSubdivisions()
@@ -76,8 +77,9 @@ export default function AddressForm({ checkoutToken, next }) {
 
     useEffect(() => {
         if (shippingSubdivision) {
-            fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision);
+            fetchShippingOptions(checkoutToken.id, shippingCountry, shippingSubdivision); 
         }
+        // eslint-disable-next-line
     }, [shippingSubdivision]);
 
     return (

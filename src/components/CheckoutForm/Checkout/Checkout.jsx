@@ -35,6 +35,7 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
             };
             generateToken();
         }
+        // eslint-disable-next-line 
     }, [cart]);
 
     // When your settinig the state with react using a previous state you need to use a callback function

@@ -25,6 +25,10 @@ yarn-error.log*
 
 #Personal 
 /npm.txt
+
+/SampleOutput
+**/Secret
+
 /Secuirty.txt
 React_Notes.jsx
 Problems.txt

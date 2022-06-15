@@ -15,23 +15,26 @@ export default function Checkout({ cart, order, onCaptureCheckout, error }) {
     const [shippingData, setShippingData] = useState({}); // Data that is being passed in from addressForm
     const classes = useStyles();
     const history = useHistory();
+    // console.log("POST - order data :", order);
 
     // Initally component did mount, only happens once at the start
     // ! useEffect does not allow the use of async unless its a new function
     useEffect(() => {
         // GenerateToken method requires Card ID, and type of Token
-        const generateToken = async () => {
-            try {
-                const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
-                console.log("token:", token);
-                setCheckoutToken(token);
-            } catch (error) {
-                // Error occurs when you actually do the order but then refresh the page Commerce.js will not be able togenerate a token because the cart is empty
-                history.push("/");
-                console.log("Checkout Error Details", error);
-            }
-        };
-        generateToken();
+        if (cart.id) {
+            const generateToken = async () => {
+                try {
+                    const token = await commerce.checkout.generateToken(cart.id, { type: "cart" });
+                    console.log("Generated Checkout Token:", token);
+                    setCheckoutToken(token);
+                } catch (error) {
+                    // Error occurs when you actually do the order but then refresh the page Commerce.js will not be able togenerate a token because the cart is empty
+                    console.log("Checkout Error Details", error);
+                    if (activeStep !== steps.length) history.push("/");
+                }
+            };
+            generateToken();
+        }
     }, [cart]);
 
     // When your settinig the state with react using a previous state you need to use a callback function

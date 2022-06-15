@@ -53,22 +53,25 @@ export default function App() {
         setCart(cart);
     };
 
-    // When order is done you need to refresh the entire cart
-    // You should not have all the items stay in the cart because the order is already done
-    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
-        try {
-            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
-            setOrder(incomingOrder);
-            refreshCart();
-        } catch (error) {
-            setErrorMessage(error.data.error.message);
-        }
-    };
-
     // Removes/refreshes the cart function
     const refreshCart = async () => {
         const newCart = await commerce.cart.refresh();
         setCart(newCart);
+    };
+    // When order is done you need to refresh the entire cart
+    // You should not have all the items stay in the cart because the order is already done
+
+    const handleCaptureCheckout = async (checkoutTokenId, newOrder) => {
+        try {
+            // Order Data Information
+            const incomingOrder = await commerce.checkout.capture(checkoutTokenId, newOrder);
+
+            setOrder(incomingOrder);
+
+            refreshCart();
+        } catch (error) {
+            setErrorMessage(error.data.error.message);
+        }
     };
 
     useEffect(() => {

@@ -91,12 +91,12 @@ export default function AddressForm({ checkoutToken, next }) {
                 <form onSubmit={methods.handleSubmit((data) => next({ ...data, shippingCountry, shippingSubdivision, shippingOption }))}>
                     <Grid container spacing={3}>
                         {/* Data and Grid Data Two different data, that you need to manipulate with object manipulation */}
-                        <FormInput require name="firstName" label="First name"></FormInput>
-                        <FormInput require name="lastName" label="Last name"></FormInput>
-                        <FormInput require name="address1" label="Address"></FormInput>
-                        <FormInput require name="email" label="Email"></FormInput>
-                        <FormInput require name="city" label="City"></FormInput>
-                        <FormInput require name="zip" label="Zip / Postal code"></FormInput>
+                        <FormInput required name="firstName" label="First name"></FormInput>
+                        <FormInput required name="lastName" label="Last name"></FormInput>
+                        <FormInput required name="address1" label="Address"></FormInput>
+                        <FormInput required name="email" label="Email"></FormInput>
+                        <FormInput required name="city" label="City"></FormInput>
+                        <FormInput required name="zip" label="Zip / Postal code"></FormInput>
                         {/* Wrap this Grid  */}
                         <Grid item xs={12} sm={6}>
                             <InputLabel>Shipping Country</InputLabel>

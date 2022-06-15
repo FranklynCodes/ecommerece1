@@ -24,11 +24,11 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
             // Finalized Order Data, Location AddressForm.jsx input
             const orderData = {
                 line_items: checkoutToken.live.line_items,
-                customer: { firstname: shippingData.firstname, lastname: shippingData.lastname, email: shippingData.email },
+                customer: { firstname: shippingData.firstName, lastname: shippingData.lastName, email: shippingData.email },
                 shipping: {
                     name: "Primary",
                     street: shippingData.address1,
-                    towncity: shippingData.city,
+                    town_city: shippingData.city,
                     county_state: shippingData.shippingSubdivision,
                     postal_zip_code: shippingData.zip,
                     country: shippingData.shippingCountry,
@@ -42,6 +42,9 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
                     },
                 },
             };
+            // OnCaptureCheckout captures the order data when checkout is finished and sends it back up the components to then be async/awaited until respone to then use that output to develop our reference number
+            
+            // Our order data then overwrites the return object from the handleCaptureCheckout function call 
             onCaptureCheckout(checkoutToken.id, orderData);
 
             nextStep();

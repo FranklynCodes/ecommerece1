@@ -8,26 +8,6 @@ import { Grid } from "@material-ui/core";
 import Product from "./Product/Prodcut";
 import useStyles from "./styles";
 
-// variable products is a array of objects that holds our
-// Temporary Products,
-/* const products = [
-    {
-        id: 1,
-        name: "Shoes",
-        description: "Running Shoes",
-        price: "55$",
-        image: "https://i.picsum.photos/id/558/500/500.jpg?hmac=K6sxSbWmoFNpi5_XrJZSaqNy0bktrWquGRzBxFCCaUk",
-    },
-    {
-        id: 2,
-        name: "Macbook",
-        description: "Apple macbook",
-        price: "150$",
-        image: "https://i.picsum.photos/id/651/500/500.jpg?hmac=70YdysGdDZN_blewD0jhzMufhsJYxBQTYNrYSVZGucM",
-    },
-];
- */
-
 /**
  * Each time your looping through something in jsx you need to have a key attached to it
  * xs means its going to take full width on moblie devices

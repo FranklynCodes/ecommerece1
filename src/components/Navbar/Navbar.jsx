@@ -4,7 +4,8 @@ import { ShoppingCart } from "@material-ui/icons";
 
 import { Link, useLocation } from "react-router-dom";
 
-import logo from "../../assets/gem.png";
+
+import logo from "../../assets/favicon.png";
 
 import useStyles from "./styles";
 
@@ -17,8 +18,8 @@ export default function Navbar({ totalItems }) {
             <AppBar position="fixed" className={classes.appBar} color="inherit">
                 <Toolbar>
                     <Typography component={Link} to="/" variant="h6" className="classes.title" color="inherit">
-                        <img src={logo} alt="Commere Site" height="25px" className={classes.image} />
-                        PlaceHolder Store
+                        <img id="logo" src={logo} alt="Commere Site" height="25px" className={classes.image} />
+                        Earth Gems
                     </Typography>
                     {/* classes.grow takes up remaining space */}
                     <div className={classes.grow}></div>

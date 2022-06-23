@@ -13,7 +13,7 @@ const Cart = ({ cart, handleUpdateCartQty, handleRemoveFromCart, handleEmptyCart
         <Typography variant="subtitle1">
             You have no items in your shopping cart, start adding some!
             <Link to="/" className={classes.link}>
-                Start Adding Some
+                {" "}Start Adding Some
             </Link>
             !
         </Typography>

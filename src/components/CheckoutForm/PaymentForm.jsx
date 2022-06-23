@@ -43,7 +43,7 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
                 },
             };
             // OnCaptureCheckout captures the order data when checkout is finished and sends it back up the components to then be async/awaited until respone to then use that output to develop our reference number
-            
+
             // Our order data then overwrites the return object from the handleCaptureCheckout function call 
             onCaptureCheckout(checkoutToken.id, orderData);
 
@@ -58,6 +58,14 @@ export default function PaymentForm({ checkoutToken, shippingData, backStep, onC
             <Typography variant="h6" gutterBottom style={{ margin: "20px 0" }}>
                 Payment Method
             </Typography>
+            <Typography variant="p" style={{}}>
+                Please use 
+            </Typography>
+            <br/>
+            <Typography variant="p" style={{}}>
+                Card Number 4242 4242 4242 4242 - Any 3 CVS - Any Future Date - Any Zip
+            </Typography>
+            <br /><br/>
             <Elements stripe={stripePromise}>
                 {/* Stripe Doc for stripe elements */}
                 {/* Call back Function / Test - Change parentheses to brackets */}

@@ -1,4 +1,6 @@
 # Earth Gems
+Will be updating documentation everything will be updated by july 4th.
+
 
 Applied Stripe and Commerce api to bridge payments and merchandise functions for e-commerce.
 
